@@ -1,44 +1,6 @@
 <!DOCTYPE html>
-<head></head>
-<body onload="initial()">
-    <h1 style="text-align: center; font-family:monospace;">Online Credit Card Donation</h1>
-    <h3>Donation received! Do you want to see what people said? <a href="news.html">Click me.</a></h3>
-    <div id="div1">
-        <img src="./images/credit-card-pay.jpeg">
-    </div>
-    <div id="div2">
-        <h2>Fund already raised for poor students:<br> $<span id="total"></span></h2>
-        <form>
-            <label>First Name:</label>
-            <input type="text" required id="fn"><br><br>
-            <label>Second Name:</label>
-            <input type="text" required id="sn"><br><br>
-
-            <label class="checkboxArea">
-                <input type="checkbox" name="cbes" onclick="addTen()">$10
-            </label>
-            <label class="checkboxArea">
-                <input type="checkbox" name="cbes" onclick="addFifty()">$20
-            </label>
-            <label class="checkboxArea">
-                <input type="checkbox" name="cbes" onclick="addTwoH()">$50
-            </label><br><br>
-            <label>  Amount: </label><span id="amountShow"></span><br><br>
-            <label>Pay Method</label>
-            <select>
-                <option>Credit Card</option>
-                <option>Debit Card</option>
-                <option>Checks</option>
-                <option>Bank Transfer</option>
-            </select>
-        </form>
-    </div>
-    <div style="float: right;">
-        <button onclick="change()">Donate</button>
-        <a href="index.html">
-            <button>Cancel</button>
-        </a>
-    </div>
+<html>
+<head>
     <script>
         var amount = 0;
         var total = 369400;
@@ -48,39 +10,62 @@
 
         function addTen(){
             amount += 10;    
-            document.getElementsByClassName("checkboxArea")[0].style.background = "pink";
+            document.getElementsByClassName("checkboxArea")[2].style.background = "pink";
             document.getElementById("amountShow").innerHTML = amount;
         }
-        function addFifty(){
+        function addTwenty(){
             amount += 20;    
             document.getElementsByClassName("checkboxArea")[1].style.background = "pink";
             document.getElementById("amountShow").innerHTML = amount;
         }
-        function addTwoH(){
+        function addFifty(){
             amount += 50;    
-            document.getElementsByClassName("checkboxArea")[2].style.background = "pink";
+            document.getElementsByClassName("checkboxArea")[0].style.background = "pink";
+            document.getElementById("amountShow").innerHTML = amount;
+        }
+        function clearAmount(){
+            amount = 0;    
+            document.getElementsByClassName("checkboxArea")[0].style.background = "greenyellow";
+            document.getElementsByClassName("checkboxArea")[1].style.background = "greenyellow";
+            document.getElementsByClassName("checkboxArea")[2].style.background = "greenyellow";
             document.getElementById("amountShow").innerHTML = amount;
         }
         function change(){
             fn = document.getElementById('fn').value;
             sn = document.getElementById('sn').value;
             
-            alert("Thank you, " + fn + " " + sn + ". " + amount + " donated!");
+            alert("Thank you, " + fn + " " + sn + ". $" + amount + " donated!");
             total += amount;
-            amount = "";
+            document.getElementById("formTwo").innerHTML = "$" + amount;
+            amount = 0;
             document.getElementsByTagName('h3')[0].style.display = "inline";
             document.getElementById("total").innerHTML = total;
             document.getElementById("amountShow").innerHTML = amount;
+            dAndT = generateDate();
+
+            document.getElementById("formOne").innerHTML = fn+" "+sn;
+            document.getElementById("formThree").innerHTML = dAndT;
+        }
+        function generateDate(){
+            var today = new Date();
+            var date = "Date: "+today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            var time = "Time: "+today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            var dateTime = date+' '+time;
+            return dateTime
         }
     </script>
     <style>
+        #amountShow,
+        select,input,label{
+            float: right;
+        }
         h3{
             display: none;
             color: green;
         }
         img{
             height:auto; 
-            width: 750px;
+            width: 850px;
         }
         h2{
             font-family: fantasy;
@@ -112,10 +97,7 @@
             background: greenyellow;
             font-weight: bolder;
             font-size: larger;
-            padding-top: 13px;
-            padding-bottom: 13px;
-            padding-left: 5px;
-            padding-right: 5px;
+            padding: 5px 10px;
             text-align: center;
             border: 4px solid black;
             border-radius: 7%;
@@ -125,18 +107,117 @@
         input[type="checkbox"]{
             visibility: hidden;
         }
-        
-        button{
+
+        .btn,button{
             padding: 9px;
             color: white;
-            background-color: black;
+            background-color: purple;
             font-size: large;
             font-weight: bold;
             display:inline-block;
             border: 4px solid black;
             border-radius: 15%;
             box-shadow: grey 5px 5px;
-
+        }
+        table,td,tr{
+            border: 0.5px solid blue;
+            font-size: 30px;
+            border-collapse: collapse;
+        }
+        td{
+            width: 450px;
         }
     </style>
-</body>
+</head>
+<body onload="initial()">
+    <h1 style="text-align: center; font-family:monospace;">Online Credit Card Donation</h1>
+    <h3>Donation received! Do you want to see what people said? <a href="news.html">Click me.</a></h3>
+    <div id="div1">
+        <img src="./images/credit-card-pay.jpeg">
+    </div>
+    <div id="div2">
+        <h2>Fund already raised for poor students:<br> $<span id="total"></span></h2>
+        <form>
+            <input type="text" id="fn">
+            <label>First Name:</label><br>
+            <input type="text" id="sn">
+            <label>Second Name:</label>
+                <br>
+                <label class="checkboxArea">
+                    <input type="checkbox"  onclick="addFifty()">$50
+                </label>
+                <label class="checkboxArea">
+                    <input type="checkbox"  onclick="addTwenty()">$20
+                </label>
+                <label class="checkboxArea">
+                    <input type="checkbox"  onclick="addTen()">$10
+                </label>
+                <label><-Amount(min:$10)</label><br>
+                <button onclick="clearAmount()">Clear Amount</button>
+                <br><span id="amountShow"></span><br>
+                <label>Pay Method</label><br>
+                <select>
+                    <option>Credit Card</option>
+                    <option>Debit Card</option>
+                    <option>Checks</option>
+                    <option>Bank Transfer</option>
+                </select>
+            </form>
+        </div>
+        <div>
+            <button onclick="change()">Donate</button>
+            <a href="index.html">
+                <button>Cancel</button>
+            </a>
+        </div><br><br><br>
+        <div style="margin-top: 100px;">
+            <table>
+                <tr>
+                    <td style="color: red;font-weight:bolder;">Donator Name</td>
+                    <td style="color: red;font-weight:bolder;">Donate Amount</td>
+                    <td style="color: red;font-weight:bolder;">Donate Date And Time</td>
+                </tr>
+                <tr>
+                    <td>Nina Emma</td>
+                    <td>$50</td>
+                    <td>Date: 2021-11-2 Time: 13:42:31</td>
+                </tr>
+                <tr>
+                    <td>Rock Vincent</td>
+                    <td>$10</td>
+                    <td>Date: 2022-2-11 Time: 12:44:22</td>
+                </tr>
+                <tr>
+                    <td>Evan Billy</td>
+                    <td>$20</td>
+                    <td>Date: 2022-3-1 Time: 15:43:5</td>
+                </tr>
+                <tr>
+                    <td>Porter Rosa</td>
+                    <td>$50</td>
+                    <td>Date: 2022-5-19 Time: 19:50:50</td>
+                </tr>
+                <tr>
+                    <td>Edith Commons</td>
+                    <td>$250</td>
+                    <td>Date: 2022-7-21 Time: 23:12:15</td>
+                </tr>
+                <tr>
+                    <td>Adam Nahum</td>
+                    <td>$150</td>
+                    <td>Date: 2022-7-14 Time: 14:59:59</td>
+                </tr>
+                <tr>
+                    <td>Rodney Rayleign</td>
+                    <td>$50</td>
+                    <td>Date: 2022-9-10 Time: 10:32:35</td>
+                </tr>
+                <tr>
+                    <td id="formOne"></td>
+                    <td id="formTwo"></td>
+                    <td id="formThree"></td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>
